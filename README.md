@@ -29,28 +29,31 @@ Data Ingestion  Knowledge Graph
 
 ## 🚀 Quick Start
 
-### Prerequisites
+See [SETUP.md](SETUP.md) for detailed setup instructions.
 
-- Python 3.9+
-- Node.js 18+
-- Docker (optional)
+### Quick Setup
 
-### Backend Setup
-
+1. **Backend Setup:**
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate
 pip install -r requirements.txt
-python main.py
+cp .env.example .env  # Add your OpenAI API key
+python ingest_data.py "Artificial Intelligence" 50
+python -m uvicorn app.main:app --reload
 ```
 
-### Frontend Setup
-
+2. **Frontend Setup:**
 ```bash
 cd frontend
 npm install
 npm start
+```
+
+3. **Or use Docker:**
+```bash
+docker-compose up --build
 ```
 
 ### Environment Variables
@@ -60,6 +63,8 @@ Create a `.env` file in the `backend` directory:
 ```env
 OPENAI_API_KEY=your_openai_api_key_here
 DATABASE_URL=sqlite:///./knowledge_base.db
+EMBEDDING_MODEL=text-embedding-3-small
+LLM_MODEL=gpt-3.5-turbo
 ```
 
 ## 📁 Project Structure
