@@ -13,6 +13,7 @@ class EmbeddingGenerator:
         self.model_name = model_name or os.getenv("EMBEDDING_MODEL", "sentence-transformers")
         self.model = None
         self.use_openai = False
+        self.client = None
         
         # Try OpenAI first if API key is available
         if os.getenv("OPENAI_API_KEY"):
@@ -22,10 +23,11 @@ class EmbeddingGenerator:
                 self.use_openai = True
                 self.model_name = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
                 print(f"Using OpenAI embeddings: {self.model_name}")
-            except:
-                print("OpenAI not available, falling back to SentenceTransformers")
+            except Exception as e:
+                print(f"OpenAI not available ({e}), falling back to SentenceTransformers")
                 self._init_sentence_transformers()
         else:
+            print("No OpenAI API key found, using SentenceTransformers")
             self._init_sentence_transformers()
     
     def _init_sentence_transformers(self):
